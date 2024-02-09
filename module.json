@@ -1,31 +1,42 @@
 {
-  "id": "hungry-adventurers",
-  "title": "Hungry Adventurers",
-  "description": "Automates ration consumption tracking during map travel sequences based on Simple Calendar.",
-  "authors": [
-    {
-      "name": "Sevaarcen"
-    }
-  ],
-  "version": "0.1.0",
-  "compatibility": {
-    "minimum": "11",
-    "verified": "11"
-  },
-  "relationships": {
-    "requires": [
-      {
-        "id": "foundryvtt-simple-calendar",
-        "type": "module"
-      }
+    "id": "hungry-adventurers",
+    "title": "Hungry Adventurers",
+    "description": "Automates ration consumption tracking during map travel sequences based on Simple Calendar.",
+    "authors": [
+        {
+            "name": "Sevaarcen"
+        }
     ],
-    "systems": [
-      {
-        "id": "pf2e",
-        "type": "system"
-      }
-    ]
-  },
-  "manifest": "https://raw.githubusercontent.com/Sevaarcen/hungry-adventurers-fvtt/main/module.json",
-  "download": "https://codeload.github.com/Sevaarcen/hungry-adventurers-fvtt/zip/refs/heads/main"
+    "version": "0.1.1",
+    "compatibility": {
+        "minimum": "11",
+        "verified": "11"
+    },
+    "relationships": {
+        "requires": [
+            {
+                "id": "foundryvtt-simple-calendar",
+                "type": "module"
+            }
+        ],
+        "systems": [
+            {
+                "id": "pf2e",
+                "type": "system"
+            }
+        ]
+    },
+    "esmodules": [
+        "scripts/main.js"
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        }
+    ],
+    "license": "LICENSE",
+    "manifest": "https://raw.githubusercontent.com/Sevaarcen/hungry-adventurers-fvtt/main/module.json",
+    "download": "https://codeload.github.com/Sevaarcen/hungry-adventurers-fvtt/zip/refs/heads/main"
 }
