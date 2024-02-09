@@ -7,3 +7,9 @@ Hooks.on("init", function() {
 Hooks.on("ready", function() {
   console.log("Hungry Adventurers -- This code runs once core initialization is ready and game data is available.");
 });
+
+Hooks.on(SimpleCalendar.Hooks.DateTimeChange, (data) => {
+    console.log("Hungry Adventurers caught a datetime change");
+    console.log(data);
+    console.log(data.diff)
+ });
