@@ -1,0 +1,44 @@
+{
+    "id": "hungry-adventurers",
+    "title": "Hungry Adenvurers",
+    "description": "Automates ration consumption tracking during map travel sequences based on Simple Calendar.",
+    "authors": [
+        {
+            "name": "Sevaarcen"
+        }
+    ],
+    "license": "LICENSE",
+    "version": "0.1.0",
+    "compatibility": {
+        "minimum": "11",
+        "verified": "11"
+    },
+    "relationships": {
+        "systems": [
+            {
+                "id": "pf2e",
+                "type": "system",
+                "compatibility": {}
+            }
+        ],
+        "requires": [
+            {
+                "id": "foundryvtt-simple-calendar",
+                "type": "module",
+                "compatibility": {
+                    "verified": "2.4.3"
+                }
+            }
+        ]
+    },
+    "esmodules": [
+        "scripts/main.js"
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "lang/en.json"
+        }
+    ]
+}
