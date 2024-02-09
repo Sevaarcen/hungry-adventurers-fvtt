@@ -2,10 +2,5 @@
     "id": "hungry-adventurers",
     "title": "Hungry Adenvurers",
     "description": "Automates ration consumption tracking during map travel sequences based on Simple Calendar.",
-    "authors": [
-        {
-            "name": "Sevaarcen"
-        }
-    ],
-
+    "version": "0.1.0"
 }
