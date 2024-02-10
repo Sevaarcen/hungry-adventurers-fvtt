@@ -21,6 +21,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
             icon: "fas fa-utensils",
             button: true,
             toggle: true,
+            active: true,
             visible: game.user.isGM,
             onClick: () => {
                 toggle_module_state()
@@ -140,7 +141,7 @@ function get_ration_info() {
  * If no rations are available, a warning is printed to the chat.
  */
 async function consume_rations() {
-    console.log("Hungry Adventurers | Consuming rations for the day");
+    console.log("Hungry Adventurers | Party is consuming rations for the day");
 
     for (const adventurer of game.actors.party.members) {
         console.debug(`Hungry Adventurers | Consuming a ration on behalf of ${adventurer.name}`)
