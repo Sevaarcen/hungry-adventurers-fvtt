@@ -7,7 +7,7 @@
             "name": "Sevaarcen"
         }
     ],
-    "version": "0.1.4",
+    "version": "0.1.5",
     "compatibility": {
         "minimum": "11",
         "verified": "11"
@@ -30,7 +30,7 @@
         "scripts/main.js"
     ],
     "styles": [
-        "styles/menu-icon.css"
+        "styles/menu.scss"
     ],
     "languages": [
         {

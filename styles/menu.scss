@@ -14,3 +14,7 @@
         display: block;
     }
 }
+
+#controls ol.control-tools > li[data-tooltip="HAFVTT.ControlToggle"] {
+    place-content: unset;
+}

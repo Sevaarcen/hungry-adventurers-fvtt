@@ -1,3 +1,5 @@
+const DAY_IN_SECONDS = (60*60*24);
+
 Hooks.on("init", function() {
     console.log("Hungry Adventurers | Initializing variables in game.hungry_adventurers");
 
@@ -18,30 +20,34 @@ Hooks.on("getSceneControlButtons", (controls) => {
                 button: true,
                 visible: game.user.isGM,
                 onClick: () => {
-                    if (game.hungry_adventurers.enabled) {
-                        console.log("Hungry Adventurers | Disabled");
-                        game.hungry_adventurers.enabled = false;
-                        game.hungry_adventurers.seconds_since_eating = 0;
-                    } else {
-                        console.log("Hungry Adventurers | Enabled");
-                        game.hungry_adventurers.enabled = true;
-                    }
-
+                    toggle_module_state()
                 }
             }
         )
 });
 
 
+function toggle_module_state() {
+    if (game.hungry_adventurers.enabled) {
+        console.log("Hungry Adventurers | Disabled");
+        game.hungry_adventurers.enabled = false;
+        game.hungry_adventurers.seconds_since_eating = 0;
+    } else {
+        console.log("Hungry Adventurers | Enabled");
+        game.hungry_adventurers.enabled = true;
+    }
+}
+
+
 function check_ration_consumption() {
-    let days_since_eating = game.hungry_adventurers.seconds_since_eating/(60*60*24);
+    let days_since_eating = game.hungry_adventurers.seconds_since_eating/DAY_IN_SECONDS;
     console.log(`Hungry Adventurers | Seconds since last ate: ${game.hungry_adventurers.seconds_since_eating}, days: ${days_since_eating}`);
-    if (days_since_eating > 1) {
+    if (game.hungry_adventurers.seconds_since_eating >= DAY_IN_SECONDS) {
         let before_eating_info = get_ration_info();
         console.log(before_eating_info)
-        while (days_since_eating > 1) {
+        while (game.hungry_adventurers.seconds_since_eating >= DAY_IN_SECONDS) {
             consume_rations();
-            days_since_eating -= 1;
+            game.hungry_adventurers.seconds_since_eating -= DAY_IN_SECONDS;
         }
         let after_eating_info = get_ration_info();
         console.log(after_eating_info)
@@ -65,7 +71,7 @@ function get_ration_info() {
     return ration_info;
 }
 
-function consume_rations() {
+async function consume_rations() {
     console.log("Hungry Adventurers | Performing ration consumption")
 
     let party_members = game.actors.party.members;
@@ -73,7 +79,7 @@ function consume_rations() {
     for (const adventurer of party_members) {
         console.log(`Hungry Adventurers | consuming a ration on behalf of ${adventurer.name}`)
         let inventory_ration = adventurer.inventory.find(e => e.name === "Rations");
-        inventory_ration.consume();  // no need to await here, it'll happen when it happens
+        await inventory_ration.consume();
     }
 }
 
