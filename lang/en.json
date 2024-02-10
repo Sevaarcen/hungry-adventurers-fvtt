@@ -4,7 +4,7 @@
         "ChatTitle": "Hungry Adventurers",
         "TableSubject": "Adventurer",
         "TableUsed": "Rations Used",
-        "TableRemaining": "Days Rations Remaining",
-        "NoRationsLeft": "is out of rations"
+        "TableRemaining": "Days of Rations Remaining",
+        "NoRationsLeft": "is out of rations and didn't eat"
     }
 }

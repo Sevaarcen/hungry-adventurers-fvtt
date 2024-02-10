@@ -4,10 +4,11 @@
     "description": "Automates ration consumption tracking during map travel sequences based on Simple Calendar.",
     "authors": [
         {
-            "name": "Sevaarcen"
+            "name": "Sevaarcen",
+            "url": "https://github.com/Sevaarcen"
         }
     ],
-    "version": "0.1.8",
+    "version": "0.2.0",
     "compatibility": {
         "minimum": "11",
         "verified": "11"
