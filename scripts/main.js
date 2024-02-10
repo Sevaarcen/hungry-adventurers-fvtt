@@ -68,7 +68,7 @@ async function check_ration_consumption() {
     let seconds_in_day = sc_time_info.secondsInMinute * sc_time_info.minutesInHour * sc_time_info.hoursInDay;
 
     let days_since_eating = game.hungry_adventurers.seconds_since_eating/seconds_in_day;
-    console.log(`Hungry Adventurers | Seconds since last ate: ${game.hungry_adventurers.seconds_since_eating}, days: ${days_since_eating}`);
+    console.log(`Hungry Adventurers | Seconds since last ate: ${game.hungry_adventurers.seconds_since_eating}, days: ${days_since_eating} (day=${seconds_in_day} seconds)`);
 
     if (game.hungry_adventurers.seconds_since_eating < seconds_in_day) {
         console.log("Hungry Adventurers | Not quite hungry yet");
