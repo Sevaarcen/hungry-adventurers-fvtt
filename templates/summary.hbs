@@ -1,0 +1,19 @@
+<div>
+    <b>{{localize "HAFVTT.ChatTitle"}}</b>
+</div>
+<div>
+    <table>
+        <tr>
+            <th>{{localize "HAFVTT.ChatTitle"}}</th>
+            <th>{{localize "HAFVTT.TableBefore"}}</th>
+            <th>{{localize "HAFVTT.TableRemaining"}}</th>
+        </tr>
+        {{#each usage}}
+            <tr>
+                <td>{{name}}</td>
+                <td>{{used}}</td>
+                <td>{{remaining}}</td>
+            </tr>
+        {{/each}}
+    </table>
+</div>

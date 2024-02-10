@@ -42,19 +42,48 @@ function toggle_module_state() {
 async function check_ration_consumption() {
     let days_since_eating = game.hungry_adventurers.seconds_since_eating/DAY_IN_SECONDS;
     console.log(`Hungry Adventurers | Seconds since last ate: ${game.hungry_adventurers.seconds_since_eating}, days: ${days_since_eating}`);
-    if (game.hungry_adventurers.seconds_since_eating >= DAY_IN_SECONDS) {
-        let before_eating_info = get_ration_info();
-        console.log(before_eating_info)
-        while (game.hungry_adventurers.seconds_since_eating >= DAY_IN_SECONDS) {
-            await consume_rations();
-            game.hungry_adventurers.seconds_since_eating -= DAY_IN_SECONDS;
-        }
-        let after_eating_info = get_ration_info();
-        console.log(after_eating_info)
-        console.log(`Hungry Adventurers | Seconds since last ate: ${game.hungry_adventurers.seconds_since_eating}, days: ${days_since_eating}`);
-    } else {
+
+    if (game.hungry_adventurers.seconds_since_eating < DAY_IN_SECONDS) {
         console.log("Hungry Adventurers | Not quite hungry yet");
+        return;
     }
+
+    let before_eating_info = get_ration_info();
+
+    while (game.hungry_adventurers.seconds_since_eating >= DAY_IN_SECONDS) {
+        await consume_rations();
+        game.hungry_adventurers.seconds_since_eating -= DAY_IN_SECONDS;
+    }
+
+    console.log(`Hungry Adventurers | Seconds since last ate: ${game.hungry_adventurers.seconds_since_eating}, days: ${days_since_eating}`);
+
+    let after_eating_info = get_ration_info();
+    let ration_changes = []
+    for (const adventurer of game.actors.party.members) {
+        let name = adventurer.name;
+        let ration_diff = after_eating_info[name] - before_eating_info[name];
+        ration_changes.push({
+            name: name,
+            change: ration_diff,
+            remaining: after_eating_info[name]
+        });
+    }
+    console.log(ration_changes)
+
+    // Make chat card showing a summary of the entire party's ration usage
+    const render_context = {
+        usage: ration_changes
+    };
+
+    const content = await renderTemplate("modules/hungry-adventurers/templates/summary.hbs", render_context);
+
+    const messageData = {
+        type: CONST.CHAT_MESSAGE_TYPES["OTHER"],
+        content: content,
+        speaker: null,
+        rolls: null
+    }
+    ChatMessage.create(messageData, {});
 }
 
 function get_ration_info() {
@@ -79,7 +108,22 @@ async function consume_rations() {
     for (const adventurer of party_members) {
         console.log(`Hungry Adventurers | consuming a ration on behalf of ${adventurer.name}`)
         let inventory_ration = adventurer.inventory.find(e => e.name === "Rations");
-        await inventory_ration.consume();
+        if(inventory_ration === undefined) {
+            // Make chat card showing a summary of the entire party's ration usage
+            const render_context = {
+                name: adventurer.name
+            };
+            const content = await renderTemplate("modules/hungry-adventurers/templates/depleted.hbs", render_context);
+            const messageData = {
+                type: CONST.CHAT_MESSAGE_TYPES["OTHER"],
+                content: content,
+                speaker: null,
+                rolls: null
+            }
+            ChatMessage.create(messageData, {});
+        } else {
+            await inventory_ration.consume();
+        }
     }
 }
 
