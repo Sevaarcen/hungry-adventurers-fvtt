@@ -16,7 +16,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
             {
                 name: "HungryAdventurers",
                 title: game.i18n.localize("HAFVTT.ControlToggle"),
-                icon: "fas hafvtt-icon",
+                icon: "fas bowl-food",
                 button: true,
                 visible: game.user.isGM,
                 onClick: () => {
@@ -39,14 +39,14 @@ function toggle_module_state() {
 }
 
 
-function check_ration_consumption() {
+async function check_ration_consumption() {
     let days_since_eating = game.hungry_adventurers.seconds_since_eating/DAY_IN_SECONDS;
     console.log(`Hungry Adventurers | Seconds since last ate: ${game.hungry_adventurers.seconds_since_eating}, days: ${days_since_eating}`);
     if (game.hungry_adventurers.seconds_since_eating >= DAY_IN_SECONDS) {
         let before_eating_info = get_ration_info();
         console.log(before_eating_info)
         while (game.hungry_adventurers.seconds_since_eating >= DAY_IN_SECONDS) {
-            consume_rations();
+            await consume_rations();
             game.hungry_adventurers.seconds_since_eating -= DAY_IN_SECONDS;
         }
         let after_eating_info = get_ration_info();

@@ -7,7 +7,7 @@
             "name": "Sevaarcen"
         }
     ],
-    "version": "0.1.5",
+    "version": "0.1.6",
     "compatibility": {
         "minimum": "11",
         "verified": "11"
@@ -28,9 +28,6 @@
     },
     "esmodules": [
         "scripts/main.js"
-    ],
-    "styles": [
-        "styles/menu.scss"
     ],
     "languages": [
         {
