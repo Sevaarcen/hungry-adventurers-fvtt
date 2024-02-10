@@ -2,12 +2,39 @@ Hooks.on("init", function() {
     console.log("Hungry Adventurers | Initializing variables in game.hungry_adventurers");
 
     game.hungry_adventurers = {
+        enabled: true,
         seconds_since_eating: 0
     }
 });
 
+Hooks.on("getSceneControlButtons", (controls) => {
+    controls
+        .find((c) => c.name == "notes")
+        .tools.push(
+            {
+                name: "HungryAdventurers",
+                title: game.i18n.localize("HAFVTT.ControlToggle"),
+                icon: "fas hafvtt-icon",
+                button: true,
+                visible: game.user.isGM,
+                onClick: () => {
+                    if (game.hungry_adventurers.enabled) {
+                        console.log("Hungry Adventurers | Disabled");
+                        game.hungry_adventurers.enabled = false;
+                        game.hungry_adventurers.seconds_since_eating = 0;
+                    } else {
+                        console.log("Hungry Adventurers | Enabled");
+                        game.hungry_adventurers.enabled = true;
+                    }
+
+                }
+            }
+        )
+});
+
+
 function check_ration_consumption() {
-    let days_since_eating = game.seconds_since_eating/(60*60*24);
+    let days_since_eating = game.hungry_adventurers.seconds_since_eating/(60*60*24);
     console.log(`Hungry Adventurers | Seconds since last ate: ${game.hungry_adventurers.seconds_since_eating}, days: ${days_since_eating}`);
     if (days_since_eating > 1) {
         let before_eating_info = get_ration_info();
@@ -53,10 +80,14 @@ function consume_rations() {
 
 Hooks.on(SimpleCalendar.Hooks.DateTimeChange, (data) => {
     console.log("Hungry Adventurers | Caught a datetime change");
+    if (!game.hungry_adventurers.enabled) {
+        console.log("Hungry Adventurers | Skipping action, is disabled");
+        return;
+    }
     console.log(data);
     console.log(data.diff);
     let before = game.hungry_adventurers.seconds_since_eating;
     game.hungry_adventurers.seconds_since_eating += data.diff;
-    console.log(`Hungry Adventurers | Adding ${data.diff} to ${before}, new total = ${game.hungry_adventurers.seconds_since_eating}`)
+    console.log(`Hungry Adventurers | Adding ${data.diff} to ${before}, new total = ${game.hungry_adventurers.seconds_since_eating}`);
     check_ration_consumption();
  });
