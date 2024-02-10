@@ -2,7 +2,7 @@
     "HAFVTT": {
         "ControlToggle": "Toggle Auto-Ration Consumption",
         "ChatTitle": "Hungry Adventurers",
-        "TableAdventurer": "Adventurer",
+        "TableSubject": "Adventurer",
         "TableUsed": "Rations Used",
         "TableRemaining": "Days Rations Remaining",
         "NoRationsLeft": "is out of rations"

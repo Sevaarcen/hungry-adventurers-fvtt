@@ -12,18 +12,16 @@ Hooks.on("init", function() {
 Hooks.on("getSceneControlButtons", (controls) => {
     controls
         .find((c) => c.name == "notes")
-        .tools.push(
-            {
-                name: "HungryAdventurers",
-                title: game.i18n.localize("HAFVTT.ControlToggle"),
-                icon: "fas bowl-food",
-                button: true,
-                visible: game.user.isGM,
-                onClick: () => {
-                    toggle_module_state()
-                }
+        .tools.push({
+            name: "HungryAdventurers",
+            title: game.i18n.localize("HAFVTT.ControlToggle"),
+            icon: "fas fa-utensils toggle active",
+            button: true,
+            visible: game.user.isGM,
+            onClick: () => {
+                toggle_module_state()
             }
-        )
+        })
 });
 
 
@@ -91,6 +89,10 @@ function get_ration_info() {
     let party_members = game.actors.party.members;
     for (const adventurer of party_members) {
         let inventory_ration = adventurer.inventory.find(e => e.name === "Rations");
+        if (inventory_ration === undefined) {
+            ration_info[adventurer.name] = 0;
+            continue;
+        }
         let days_worth = (
                              (inventory_ration.system.quantity - 1) * inventory_ration.system.uses.max
                          ) + inventory_ration.system.uses.value;
@@ -109,7 +111,7 @@ async function consume_rations() {
         console.log(`Hungry Adventurers | consuming a ration on behalf of ${adventurer.name}`)
         let inventory_ration = adventurer.inventory.find(e => e.name === "Rations");
         if(inventory_ration === undefined) {
-            // Make chat card showing a summary of the entire party's ration usage
+            // Make chat card highlighting the lack of available rations
             const render_context = {
                 name: adventurer.name
             };

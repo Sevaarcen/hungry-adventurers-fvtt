@@ -4,14 +4,14 @@
 <div>
     <table>
         <tr>
-            <th>{{localize "HAFVTT.ChatTitle"}}</th>
-            <th>{{localize "HAFVTT.TableBefore"}}</th>
+            <th>{{localize "HAFVTT.TableSubject"}}</th>
+            <th>{{localize "HAFVTT.TableUsed"}}</th>
             <th>{{localize "HAFVTT.TableRemaining"}}</th>
         </tr>
         {{#each usage}}
             <tr>
                 <td>{{name}}</td>
-                <td>{{used}}</td>
+                <td>{{change}}</td>
                 <td>{{remaining}}</td>
             </tr>
         {{/each}}
