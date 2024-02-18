@@ -86,7 +86,8 @@ async function check_ration_consumption() {
 
     let after_eating_info = get_ration_info();
     let ration_changes = []
-    for (const adventurer of game.actors.party.members) {
+    let party_members = game.actors.party.members.filter(m => m.type === "character");
+    for (const adventurer of party_members) {
         let name = adventurer.name;
         let ration_diff = -1 * (after_eating_info[name] - before_eating_info[name]);
         ration_changes.push({
@@ -120,16 +121,19 @@ async function check_ration_consumption() {
  */
 function get_ration_info() {
     let ration_info = {}
-    let party_members = game.actors.party.members;
+    let party_members = game.actors.party.members.filter(m => m.type === "character");
     for (const adventurer of party_members) {
-        let inventory_ration = adventurer.inventory.find(e => e.name === "Rations");
-        if (inventory_ration === undefined) {
+        let all_ration_items = adventurer.getEmbeddedCollection("items").filter(item => item.name === "Rations");
+
+        if (all_ration_items.length === 0) {
             ration_info[adventurer.name] = 0;
             continue;
         }
-        let days_worth = (
-                             (inventory_ration.system.quantity - 1) * inventory_ration.system.uses.max
-                         ) + inventory_ration.system.uses.value;
+
+        let days_worth = 0;
+        for (const ration of all_ration_items) {
+            days_worth += ((ration.system.quantity - 1) * ration.system.uses.max) + ration.system.uses.value;
+        }
         ration_info[adventurer.name] = days_worth;
     }
 
@@ -143,11 +147,13 @@ function get_ration_info() {
 async function consume_rations() {
     console.log("Hungry Adventurers | Party is consuming rations for the day");
 
-    for (const adventurer of game.actors.party.members) {
+    let party_members = game.actors.party.members.filter(m => m.type === "character");
+    for (const adventurer of party_members) {
         console.debug(`Hungry Adventurers | Consuming a ration on behalf of ${adventurer.name}`)
 
-        let inventory_ration = adventurer.inventory.find(e => e.name === "Rations");
-        if(inventory_ration === undefined) {
+        // Find only will get 1 ration from the inventory, but that's all we need here
+        let all_ration_items = adventurer.getEmbeddedCollection("items").filter(item => item.name === "Rations");
+        if (all_ration_items.length === 0) {
             console.log(`Hungry Adventurers | ${adventurer.name} doesn't have any rations`);
             // Make chat card highlighting the lack of available rations
             const render_context = {
@@ -162,7 +168,7 @@ async function consume_rations() {
             }
             ChatMessage.create(messageData, {});
         } else {
-            await inventory_ration.consume();
+            await all_ration_items[0].consume();
         }
     }
 }
